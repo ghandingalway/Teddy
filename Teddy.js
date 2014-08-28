@@ -32,14 +32,14 @@
 		paper.setStart();
 		game1rect0 = paper.rect(110, 310, 100,100, 15);
 		game1rect0.attr("fill", "white");
-		game1rect1 = paper.rect(120,330,30,30);
+		game1rect1 = paper.rect(120,330,30,30,1);
 		game1rect1.attr("fill","blue");
-		game1rect2 = paper.rect(145,355,50,30);
+		game1rect2 = paper.rect(145,355,50,30,1);
 		game1rect2.attr("fill","red");
-		game1circle1 = paper.ellipse(180,345,25, 15);
-		game1circle1.attr("fill","green");
-		game1circle2 = paper.circle(130, 380, 15);
-		game1circle2.attr("fill", "yellow");
+		game1rect3 = paper.rect(140,325,60, 30,30);
+		game1rect3.attr("fill","green");
+		game1rect4 = paper.rect(120, 360, 35,35,30);
+		game1rect4.attr("fill", "yellow");
 		var game1 = paper.setFinish();
 		paper.setStart();
 		game2rect0 = paper.rect(790, 310, 100,100,15);
@@ -159,6 +159,35 @@
 		game4rect21=paper.rect(678,672,50,10,5);
 		game4rect21.attr("fill","grey");
 		var game4 = paper.setFinish();
-	})	
+		var finaldimensions = {x:0, y:0, width:1200, height:750};
+		var game1final = {x:-110, y:-310, width:12, height:7.5};
+		var game4final={x:-625, y:-545, width:8, height:5};
+		var game3final={x:-225, y:-545, width:8, height:5};
+		var game2final={x:-790, y:-310, width:12, height:7.5};
+		var movingtofinal= function(set, final)
+		{
+			set.toFront();
+			set.forEach(function(that){
+			 that.animate({
+				 x:((that.attrs.x+final.x)*final.width), 
+				 y:((that.attrs.y+final.y)*final.height), 
+				 width:(that.attrs.width*final.width), 
+				 height:(that.attrs.height*final.height),
+			 	r:(that.attrs.rx*final.width)}, 1000, "linear");
+			});
+		}
+	game1.click(function()
+		{
+			movingtofinal(game1, game1final);
+		});	
+		game4.click(function(){
+			movingtofinal(game4,game4final);
+		});
+		game3.click(function(){
+			movingtofinal(game3, game3final);
+		});
+		game2.click(function(){
+			movingtofinal(game2, game2final);
+		})
 })
-();
+})();
