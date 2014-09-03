@@ -7,9 +7,9 @@
 		larm = paper.ellipse(225,375,150,75);
 		larm.transform("r10");
 		rarm = paper.ellipse(775,375,150,75);
-		rarm.transform("r350");
+		rarm.transform("r-10");
 		lleg1= paper.path("M312,485L238,529L360,712L457,644z");
-		rleg2=paper.path("M688,485L762,529L640,712L543,644");
+		rleg2=paper.path("M688,485L762,529L640,712L543,644z");
 		torso = paper.ellipse(500,400,200,250);
 		lear = paper.circle(325,75,60);
 		rear=paper.circle(675,75,60);
@@ -159,35 +159,99 @@
 		game4rect21=paper.rect(678,672,50,10,5);
 		game4rect21.attr("fill","grey");
 		var game4 = paper.setFinish();
-		var finaldimensions = {x:0, y:0, width:1200, height:750};
-		var game1final = {x:-110, y:-310, width:12, height:7.5};
-		var game4final={x:-625, y:-545, width:8, height:5};
-		var game3final={x:-225, y:-545, width:8, height:5};
-		var game2final={x:-790, y:-310, width:12, height:7.5};
-		var movingtofinal= function(set, final)
+		
+		var movingtofinal= function(set)
 		{
 			set.toFront();
-			set.forEach(function(that){
-			 that.animate({
+			var final = {x:0-set[0].attrs.x, y:0-set[0].attrs.y, width:1200/set[0].attrs.width, height:750/set[0].attrs.height}
+			set.forEach(function(that)
+			{
+				that.animate(
+				{
 				 x:((that.attrs.x+final.x)*final.width), 
 				 y:((that.attrs.y+final.y)*final.height), 
 				 width:(that.attrs.width*final.width), 
 				 height:(that.attrs.height*final.height),
-			 	r:(that.attrs.rx*final.width)}, 1000, "linear");
+			 	r:(that.attrs.r*final.width)
+				}, 1000, "linear", function(){setTimeout(function()
+					{
+					if(that!=set[0])
+						{						
+							that.remove()
+						}
+					},1000);});
 			});
 		}
+		var minimiseteddy = function()
+		{
+			var final = {cx:50,cy:50, rx:0.1,ry:0.1,r:0.1}
+			body.forEach(function(that)
+			{
+				if(that.attrs.rx)
+				{
+					if(that==rarm||that == larm)
+					{
+						that.transform("");
+					}
+					that.animate(
+					{
+						cx:(that.attrs.cx+final.cx)*final.rx,
+						cy:(that.attrs.cy+final.cy)*final.ry,
+						rx:that.attrs.rx*final.rx,
+						ry:that.attrs.ry*final.ry
+					},1000,"linear");
+				}
+				else if(that.attrs.r)
+				{
+					that.animate(
+					{
+						cx:(that.attrs.cx+final.cx)*final.r,
+						cy:(that.attrs.cy+final.cy)*final.r,
+						r:that.attrs.r*final.r
+					},1000,"linear");
+				}
+				else if (that==lleg1)
+				{
+					that.animate(
+					{
+						path: Raphael.transformPath("M312,485L238,529L360,712L457,644z", "t-305,-535s0.1")
+					},1000,"linear");
+				}
+				else
+				{
+					that.animate(
+					{
+						path:Raphael.transformPath("M688,485L762,529L640,712L543,644z", "t-585,-535s0.1")
+					},1000,"linear");
+				}
+			});
+			jumper.animate(
+			{
+				path:Raphael.transformPath("M318,297C340,400,660,400,682,297L695,320C700,300,745,300,750,300L750,455C745,460,700,455,695,450C700,450,700,460,695,470L305,470C300,460,300,450,305,450C300,455,255,460,250,455L250,300C255,300,300,300,305,320z", "t-445,-340s0.1")
+			},1000,"linear");
+			body.toFront();
+			jumper.toFront();
+		}	
 	game1.click(function()
 		{
-			movingtofinal(game1, game1final);
+			var temp1 = game1.clone();
+			movingtofinal(temp1);
+			minimiseteddy();
 		});	
 		game4.click(function(){
-			movingtofinal(game4,game4final);
+			var temp4=game4.clone();
+			movingtofinal(temp4);
+			minimiseteddy();
 		});
 		game3.click(function(){
-			movingtofinal(game3, game3final);
+			var temp3 = game3.clone();
+			movingtofinal(temp3);
+			minimiseteddy();
 		});
 		game2.click(function(){
-			movingtofinal(game2, game2final);
+			var temp2 = game2.clone();
+			movingtofinal(temp2);
+			minimiseteddy();
 		})
 })
 })();
