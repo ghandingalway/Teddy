@@ -232,11 +232,60 @@
 			body.toFront();
 			jumper.toFront();
 		}	
+		var startgame1 = function(temp)
+		{
+			paper.setStart();
+			tempgap1 = paper.rect(820,20,170,170,20);
+			tempgap2 = paper.rect(820,220,250,150,20);
+			tempgap3 = paper.rect(820, 400, 150, 150, 80);
+			tempgap4 = paper.rect(820, 580,200,100, 100);
+			var gaps = paper.setFinish();
+			gaps.attr({stroke:'black', fill:'white'});
+			gaps.attr("stroke-width", "5");
+			paper.setStart();
+			tempdrag1 = paper.rect(100,20,160,160,20);
+			tempdrag2 = paper.rect(320,220, 240,140,20);
+			tempdrag3 = paper.rect(130,570, 190,90,100);
+			var reds = paper.setFinish();
+			reds.attr({stroke:"red", fill:"red"});
+			paper.setStart();
+			tempdrag4 = paper.rect(320, 40, 160, 160, 20);
+			tempdrag5 = paper.rect(110, 450, 140, 140, 80);
+			tempdrag6 = paper.rect(550,580, 190,90,100);
+			var blues = paper.setFinish();
+			blues.attr({stroke:"blue", fill:"blue"});
+			paper.setStart();
+			tempdrag7 = paper.rect(520,20, 160,160,20);
+			tempdrag8 = paper.rect(300,400,140,140,80);
+			tempdrag9 = paper.rect(310, 620, 190,90,100);
+			var yellows = paper.setFinish();
+			yellows.attr({stroke:"yellow", fill:"yellow"});
+			paper.setStart();
+			tempdrag10 = paper.rect(20, 250, 240, 140, 20);
+			tempdrag11 = paper.rect(600, 200, 240, 140, 20);
+			tempdrag12 = paper.rect(510, 450, 140, 140, 80);
+			var greens = paper.setFinish();
+			greens.attr({stroke:"green", fill:"green"});
+			var Gap = [];
+			var GapCoords= {};
+			gaps.forEach(function(that)
+			{
+				GapCoords.height = Number(that.attrs.height);
+				GapCoords.width = Number(that.attrs.width);
+				GapCoords.xtop = Number(that.attrs.x - 10);
+				GapCoords.ytop = Number(that.attrs.y-10);
+				GapCoords.xbottom = GapCoords.xtop+GapCoords.width+20;
+				GapCoords.ybottom = GapCoords.ytop+GapCoords.height+20;
+				Gap.push(GapCoords);
+			});
+			
+		}
 	game1.click(function()
 		{
 			var temp1 = game1.clone();
 			movingtofinal(temp1);
 			minimiseteddy();
+			window.setTimeout(function(){startgame1(temp1)}, 2000);
 		});	
 		game4.click(function(){
 			var temp4=game4.clone();
