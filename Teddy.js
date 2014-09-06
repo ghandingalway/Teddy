@@ -234,6 +234,34 @@
 		}	
 		var startgame1 = function(temp)
 		{
+			var Gap = [];
+			var GapCoords= {};
+			
+			var pointermovefunction = function(e)
+			{
+				this.attr("x", (e.pageX-50));
+				this.attr("y", (e.pageY-50));	
+				for(var i=0; i<Gap.length; i++)
+					{
+				   		if((Number(this.attrs.x)>=Gap[i].xtop)
+							&& (Number(this.attrs.x)<=Gap[i].xbottom) 
+							&& (Number(this.attrs.y)>=Gap[i].ytop)
+							&& (Number(this.attrs.y)<=Gap[i].ybottom)
+							//&& ((this.attrs.height-10)===Gap[i].height)
+							//&& ((this.attrs.width-10)===Gap[i].width)
+							)
+						{
+							audiofile.play();
+							this.attr("x", (Gap[i].xtop+15));
+							this.attr("y", (Gap[i].ytop+15));
+							this.unmousemove(pointermovefunction);
+							this.animate(
+							{
+								"opacity":0	
+							}, 1000, "linear");
+						}
+					}
+			}
 			paper.setStart();
 			tempgap1 = paper.rect(820,20,170,170,20);
 			tempgap2 = paper.rect(820,220,250,150,20);
@@ -248,6 +276,7 @@
 			tempdrag3 = paper.rect(130,570, 190,90,100);
 			var reds = paper.setFinish();
 			reds.attr({stroke:"red", fill:"red"});
+			reds.mousemove(pointermovefunction);
 			paper.setStart();
 			tempdrag4 = paper.rect(320, 40, 160, 160, 20);
 			tempdrag5 = paper.rect(110, 450, 140, 140, 80);
@@ -266,8 +295,6 @@
 			tempdrag12 = paper.rect(510, 450, 140, 140, 80);
 			var greens = paper.setFinish();
 			greens.attr({stroke:"green", fill:"green"});
-			var Gap = [];
-			var GapCoords= {};
 			gaps.forEach(function(that)
 			{
 				GapCoords.height = Number(that.attrs.height);
@@ -278,8 +305,7 @@
 				GapCoords.ybottom = GapCoords.ytop+GapCoords.height+20;
 				Gap.push(GapCoords);
 			});
-			
-		}
+		}	
 	game1.click(function()
 		{
 			var temp1 = game1.clone();
@@ -301,6 +327,6 @@
 			var temp2 = game2.clone();
 			movingtofinal(temp2);
 			minimiseteddy();
-		})
+		});
 })
 })();
