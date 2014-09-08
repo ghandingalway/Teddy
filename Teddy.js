@@ -1,6 +1,7 @@
 (function(){
 	$(document).ready(function(){
-		var paper = Raphael(0,0,1200,750);
+		var audiofile = document.getElementById("applause");
+		var paper = Raphael("svg",1200,750);
 		var background = paper.rect(0,0,1200,750);
 		background.attr("fill","#add8e6");
 		paper.setStart();
@@ -233,34 +234,33 @@
 			jumper.toFront();
 		}	
 		var startgame1 = function(temp)
-		{
-			var Gap = [];
-			var GapCoords= {};
-			
+		{	
 			var pointermovefunction = function(e)
 			{
-				this.attr("x", (e.pageX-50));
-				this.attr("y", (e.pageY-50));	
-				for(var i=0; i<Gap.length; i++)
+				var theother = this
+				theother.attr("x", (e.pageX-50));
+				theother.attr("y", (e.pageY-50));	
+				gaps.forEach(function(that)
+				{
+					if((theother.attrs.x>=that.attrs.x)	
+						&& (theother.attrs.x<=(that.attrs.x+that.attrs.width+20))
+						&& (theother.attrs.y>=that.attrs.y)
+						&& (theother.attrs.y<=(that.attrs.y+that.attrs.height+20)))
 					{
-				   		if((Number(this.attrs.x)>=Gap[i].xtop)
-							&& (Number(this.attrs.x)<=Gap[i].xbottom) 
-							&& (Number(this.attrs.y)>=Gap[i].ytop)
-							&& (Number(this.attrs.y)<=Gap[i].ybottom)
-							//&& ((this.attrs.height-10)===Gap[i].height)
-							//&& ((this.attrs.width-10)===Gap[i].width)
-							)
-						{
-							audiofile.play();
-							this.attr("x", (Gap[i].xtop+15));
-							this.attr("y", (Gap[i].ytop+15));
-							this.unmousemove(pointermovefunction);
-							this.animate(
+						audiofile.play();
+							theother.attr("x", (that.attrs.x+5));
+							theother.attr("y", (that.attrs.y+5));
+							theother.unmousemove(pointermovefunction);
+							
+							theother.animate(
 							{
 								"opacity":0	
-							}, 1000, "linear");
-						}
+							}, 1000, "linear", function()
+							{
+								theother.remove();
+							});
 					}
+				});
 			}
 			paper.setStart();
 			tempgap1 = paper.rect(820,20,170,170,20);
@@ -283,28 +283,21 @@
 			tempdrag6 = paper.rect(550,580, 190,90,100);
 			var blues = paper.setFinish();
 			blues.attr({stroke:"blue", fill:"blue"});
+			blues.mousemove(pointermovefunction);
 			paper.setStart();
 			tempdrag7 = paper.rect(520,20, 160,160,20);
 			tempdrag8 = paper.rect(300,400,140,140,80);
 			tempdrag9 = paper.rect(310, 620, 190,90,100);
 			var yellows = paper.setFinish();
 			yellows.attr({stroke:"yellow", fill:"yellow"});
+			yellows.mousemove(pointermovefunction);
 			paper.setStart();
 			tempdrag10 = paper.rect(20, 250, 240, 140, 20);
 			tempdrag11 = paper.rect(600, 200, 240, 140, 20);
 			tempdrag12 = paper.rect(510, 450, 140, 140, 80);
 			var greens = paper.setFinish();
 			greens.attr({stroke:"green", fill:"green"});
-			gaps.forEach(function(that)
-			{
-				GapCoords.height = Number(that.attrs.height);
-				GapCoords.width = Number(that.attrs.width);
-				GapCoords.xtop = Number(that.attrs.x - 10);
-				GapCoords.ytop = Number(that.attrs.y-10);
-				GapCoords.xbottom = GapCoords.xtop+GapCoords.width+20;
-				GapCoords.ybottom = GapCoords.ytop+GapCoords.height+20;
-				Gap.push(GapCoords);
-			});
+			greens.mousemove(pointermovefunction);
 		}	
 	game1.click(function()
 		{
